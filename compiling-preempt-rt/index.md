@@ -1,6 +1,6 @@
 ## Environment and requirements
 
-I ran this procedure on a Ubuntu 16.04.2 box. I'm not sure what are the requimenets but those three packages are probably necessary:
+I ran this procedure on an Ubuntu 16.04.2 box. I'm not sure what are the requimenets but those three packages are probably necessary:
 
 ```
 sudo apt-get install git
@@ -60,7 +60,7 @@ make olddefconfig
 make menuconfig
 ```
 
-Config option:
+Config options:
 
 * PREEMPT_RT_FULL = y
 * HIGH_RES_TIMERS = y
@@ -83,5 +83,7 @@ Created packages:
 ## Install packages
 
 ```
-sudo dpkg -i linux-firmware-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb linux-headers-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb linux-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
+sudo dpkg -i linux-firmware-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
+sudo dpkg -i linux-headers-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
+sudo dpkg -i linux-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
 ```
