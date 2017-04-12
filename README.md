@@ -5,3 +5,7 @@ My goal is to write and share my understandings about Linux Kernel. As I am not 
 Thanks
 
 Gustavo Bittencourt
+
+## Notes
+
+* [Compiling Preempt RT](compiling-preempt-rt)
