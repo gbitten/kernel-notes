@@ -1,6 +1,6 @@
 ## Environment and requirements
 
-I ran this procedure on an Ubuntu 16.04.2 box. I'm not sure what are the requimenets but those three packages are probably necessary:
+I ran this procedure on my Ubuntu Desktop 16.04.2 box. The following packages were needed:
 
 ```
 sudo apt-get install git
