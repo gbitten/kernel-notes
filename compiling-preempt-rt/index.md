@@ -4,7 +4,7 @@
 
 I ran this procedure on my Ubuntu Desktop 16.04.2 box. The following packages were needed:
 
-```
+```bash
 sudo apt-get install git
 sudo apt-get install libssl-dev
 sudo apt-get install dpkg-dev
@@ -14,7 +14,7 @@ sudo apt-get install dpkg-dev
 
 The directory ```prempt-rt``` is the root of kernel source.
 
-```
+```bash
 mkdir prempt-rt
 cd prempt-rt
 ```
@@ -25,16 +25,13 @@ cd prempt-rt
 
 This method first gets the mainline kernel.
  
-```
+```bash
 git init
 git remote add origin git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 git fetch origin v4.9.18
 git reset --hard FETCH_HEAD
-```
 
-And then it gets and applies the prempt-rt patch.
-
-```
+# Get and apply the prempt-rt patch.
 git branch rt14
 git checkout rt14
 wget -O - https://www.kernel.org/pub/linux/kernel/projects/rt/4.9/older/patch-4.9.18-rt14.patch.gz | gunzip -c > /tmp/patch-4.9.18-rt14.patch
@@ -47,7 +44,7 @@ git commit -m "PREEMP_RT 14"
 
 This method gets prempt-rt from its oficial git repositories ([stable](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git) or [develepment](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/)).
 
-```
+```bash
 git init
 git remote add origin git://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git
 git fetch origin v4.9.18-rt14-patches
@@ -56,7 +53,7 @@ git reset --hard FETCH_HEAD
 
 ## Configure the kernel
 
-```
+```bash
 cp /boot/config-`uname -r` .config
 make olddefconfig
 make menuconfig
@@ -69,7 +66,7 @@ Config options:
 
 ## Compile kernel and create packages
 
-```
+```bash
 make deb-pkg LOCALVERSION=-rt14
 ```
 
@@ -84,7 +81,7 @@ Created packages:
 
 ## Install packages
 
-```
+```bash
 sudo dpkg -i linux-firmware-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
 sudo dpkg -i linux-headers-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
 sudo dpkg -i linux-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
