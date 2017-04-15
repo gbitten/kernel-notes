@@ -3,4 +3,30 @@
 
 @import "{{ site.theme }}";
 
-/* Custom styles */
+/* Put sidebar below */
+aside#sidebar {
+	min-height: 0;
+	padding: 20px 0;
+	margin-top: 20px;
+	background-image: none;
+	border-top: solid 1px #ddd;
+}
+
+#main-content, aside#sidebar {
+	float: none;
+	width: 100% !important;
+}
+
+/* Ajust code colors */
+.highlight {
+	background-color: #333333;
+}
+
+pre {
+	border: 2px solid #777777;
+}
+
+pre code {
+	background: #333333;
+	color: #cccccc;
+}
