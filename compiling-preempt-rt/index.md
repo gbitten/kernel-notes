@@ -1,4 +1,6 @@
-# Compile Preempt RT kernel
+---
+title: Compile Preempt RT kernel
+---
 
 ## Environment and requirements
 
