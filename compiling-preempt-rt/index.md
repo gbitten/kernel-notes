@@ -1,5 +1,6 @@
 ---
 title: Compile Preempt RT kernel
+comments: true
 ---
 
 ## Environment and requirements
