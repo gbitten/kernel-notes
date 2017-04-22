@@ -14,7 +14,7 @@ aside#sidebar {
 
 #main-content, aside#sidebar {
 	float: none;
-	width: 100% !important;
+	width: 100%;
 }
 
 /* Ajust code colors */
@@ -31,7 +31,7 @@ pre code {
 	color: #cccccc;
 }
 
-/* Ajust header */
+/* Ajust headers*/
 header {
 	padding-top: 25px;
 	padding-bottom: 15px;
@@ -49,4 +49,10 @@ header h2 {
 
 #main-content h2 {
 	border-bottom: 1px solid #a2a9b1;	
+}
+
+#main-content h1:before, #main-content h2:before,  #main-content h3:before, #main-content h4:before{
+	content: ""; 
+	padding-right: inherit;
+	margin-left: inherit;
 }
