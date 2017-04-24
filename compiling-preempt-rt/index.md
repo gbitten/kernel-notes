@@ -25,7 +25,7 @@ cd preempt-rt
 
 ## Get the Linux kernel and the Preempt RT patch set
 
-Both methods bellow do almost the same thing. The main difference is the first method applies the Preempt RT patch set at once, as only one commit. In the second, the Preempt RT patch set is a sequence of smaller commits, so it is easier to understand what each of them does.
+The bellow methods do almost the same thing. The main difference is the first method applies the Preempt RT patch set at once, as only one commit. In the second, the Preempt RT patch set is a sequence of smaller commits, so it is easier to understand what each of them does.
 
 ### Method 1
 
@@ -44,7 +44,7 @@ Apply the Preempt RT patch set.
 wget -O - https://www.kernel.org/pub/linux/kernel/projects/rt/4.9/older/patch-4.9.18-rt14.patch.gz | gunzip -c > /tmp/patch-4.9.18-rt14.patch
 patch -p1 < /tmp/patch-4.9.18-rt14.patch
 git add -A .
-git commit -m "Apply Preemp RT patch set v4.9.18-rt14"
+git commit -m "Apply Preempt RT patch set v4.9.18-rt14"
 ```
 
 ### Method 2
@@ -73,14 +73,14 @@ make olddefconfig
 
 ### Set build options for real-time systems
 
-Use your preferred kernel config method (ex: ```make menuconfig```) to set the following config options:
+Use your preferred kernel config method (ex: ```make menuconfig```) to set the following options:
 
 * PREEMPT_RT_FULL = y
 * HIGH_RES_TIMERS = y
 
 ## Compile and install the kernel
 
-Those are the main methods I use to compile and install the kernel. 
+These are the main methods I use to compile and install the kernel. 
 
 ### Method 1
 
@@ -117,7 +117,7 @@ sudo dpkg -i linux-image-4.9.18-rt14-rt14_4.9.18-rt14-rt14-5_amd64.deb
 
 ## Reboot and verify
 
-At end of linux-image package installation, the grub configuration will be updated to include an option with the new kernel. So reboot with this kernel and verify with the command ```uname -a```.
+At the end of the installation, the grub configuration will be updated to include an option with the new kernel. Reboot with the new kernel and verify it with the command ```uname -a```.
 
 ## References
 
