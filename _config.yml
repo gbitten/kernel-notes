@@ -2,3 +2,6 @@ theme: jekyll-theme-architect
 title: Kernel notes
 description: My notes about the Linux kernel
 show_downloads: false
+
+# Google services
+google_analytics: UA-97992983-1
