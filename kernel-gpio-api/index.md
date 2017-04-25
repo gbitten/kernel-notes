@@ -1,5 +1,5 @@
 ---
-title: Kernel GPIO API (work in progress)
+title: Kernel GPIO API
 comments: true
 ---
 

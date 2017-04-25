@@ -7,9 +7,9 @@ title: Welcome to my Kernel Notes
 ## Notes
 
 * [Compiling Preempt RT](compiling-preempt-rt)
-* [Kernel GPIO API](kernel-gpio-api)
+* [Kernel GPIO API (Working in Progress)](kernel-gpio-api)
+* [Install Ubuntu Base (Working in Progress)](install-ubuntu-base)
 * [Links](links)
-
 
 ## Copyright
 
