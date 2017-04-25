@@ -3,7 +3,7 @@ title: Install Unbutu Base
 comments: true
 ---
 
-<div class="alert">Warning! This an working in progress article and its content may be incomplete and inconsistent.</div>
+<div class="alert">Warning! This is an working in progress article and its content may be incomplete and inconsistent.</div>
 
 **Ubuntu Base**, previusly known as Ubuntu Core, is a minimal rootfs for Ubuntu.
 
