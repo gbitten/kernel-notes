@@ -3,6 +3,8 @@ title: Kernel GPIO API (work in progress)
 comments: true
 ---
 
+<div class="alert">Warning! This an working in progress article and its content may be incomplete and inconsistent.</div>
+
 **General-purpose input/output** (GPIO)<sup>[1]</sup> is simple but versatile mechanims present on many hardwares. To use it in the userspace, there is its sysfs interface<sup>[2]</sup>.
 
 ## References
