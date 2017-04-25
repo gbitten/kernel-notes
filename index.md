@@ -2,14 +2,15 @@
 title: Welcome to my Kernel Notes
 ---
 
-My goal is to write and share my understandings about Linux Kernel. As I am not a native english speaker, any language correction will be really appreciated, as well, any technical comments.
-
-Thanks
-
-Gustavo Bittencourt
+[Kernel notes](https://gbitten.github.io/kernel-notes/) pages aims to register and share some of my understandings about Linux kernel and Linux on embedded systems. Technical comments and language corrections will be really appreciated.
 
 ## Notes
 
 * [Compiling Preempt RT](compiling-preempt-rt)
 * [Kernel GPIO API](kernel-gpio-api)
 * [Links](links)
+
+
+## Copyright
+
+All Kernel notes are under GPLv3 license and are available on its [GitHub page](https://github.com/gbitten/kernel-notes).

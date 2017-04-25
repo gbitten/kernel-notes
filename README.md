@@ -1,14 +1,9 @@
----
-title: Welcome to my Kernel Notes
----
+[Kernel notes](https://gbitten.github.io/kernel-notes/) pages aims to register and share some of my understandings about Linux kernel and Linux on embedded systems. Technical comments and language corrections will be really appreciated.
 
-My goal is to write and share my understandings about Linux Kernel. As I am not a native english speaker, any language correction will be really appreciated, as well, any technical comments.
+## Resources
 
-Thanks
+Kernel notes is built using:
 
-Gustavo Bittencourt
-
-## Notes
-
-* [Compiling Preempt RT](compiling-preempt-rt)
-* [Kernel GPIO API](kernel-gpio-api)
+* [GitHub pages](https://pages.github.com/)
+* [Jekyll](https://jekyllrb.com/)
+* [Architect theme](https://github.com/pietromenna/jekyll-architect-theme)
