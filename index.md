@@ -4,7 +4,7 @@
 
 * [Compiling Preempt RT](compiling-preempt-rt)
 * [Kernel GPIO API (Working in Progress)](kernel-gpio-api)
-* [Install Ubuntu Base (Working in Progress)](install-ubuntu-base)
+* [Ubuntu Base with QEMU(Working in Progress)](ubuntu-base-with-qemu)
 * [Preempt RT overview (Working in Progress)](preempt-rt-overview)
 * [Links](links)
 
