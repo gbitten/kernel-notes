@@ -120,7 +120,6 @@ Exit from `chroot`, dismount the partition, disconnect device and exit from root
 
 ```
 exit
-umount -l /mnt
 qemu-nbd -d /dev/nbd0
 exit
 ```
