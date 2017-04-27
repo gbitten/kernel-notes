@@ -120,9 +120,9 @@ Exit from chroot, unmount filesystems, disconnect device and exit from root.
 
 ```
 exit
-mount --make-rslave /mnt/sys   ; umount -R /mnt/sys
-mount --make-rslave /mnt/dev   ; umount -R /mnt/dev
-mount --make-rslave /mnt/proc/ ; umount -R /mnt/proc
+mount --make-rslave /mnt/sys  ; umount -R /mnt/sys
+mount --make-rslave /mnt/dev  ; umount -R /mnt/dev
+mount --make-rslave /mnt/proc ; umount -R /mnt/proc
 umount /mnt
 qemu-nbd -d /dev/nbd0
 exit

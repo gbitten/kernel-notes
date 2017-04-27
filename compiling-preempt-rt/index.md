@@ -49,7 +49,7 @@ git commit -m "Apply Preempt RT patch set v4.9.18-rt14"
 
 ### Method 2
 
-Get Preempt RT from its official git repositories ([stable](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git) or [development](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/)).
+Get Preempt RT from its official git repositories ([stable](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git) or [development](https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git)).
 
 ```
 git init
