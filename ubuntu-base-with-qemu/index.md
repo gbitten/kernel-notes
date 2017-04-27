@@ -116,7 +116,7 @@ passwd root
 
 ## Close procedure
 
-Exit from `chroot`, dismount the partition, disconnect device and exit from root.
+Exit from `chroot`, disconnect device and exit from root.
 
 ```
 exit
