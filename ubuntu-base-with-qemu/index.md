@@ -68,6 +68,11 @@ mkfs.ext4 /dev/nbd0p1
 
 ```
 mount /dev/nbd0p1 /mnt
+```
+
+## Install Ubuntu Base
+
+```
 cd /mnt
 tar xvfz /path/to/where/you/put/ubuntu-base-16.04-core-amd64.tar.gz
 ```
@@ -105,7 +110,7 @@ apt-get install linux-image-4.4.0-75-generic
 ### Adjust grub configuration
 
 ```
-sed -i s/nbd0p1/sda1/g /boot/grub/grub.cfg
+sed -i "s/nbd0p1 ro/sda1 rw/g" /boot/grub/grub.cfg
 ```
 
 ###  Change the root password
