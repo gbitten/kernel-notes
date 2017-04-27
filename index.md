@@ -3,8 +3,8 @@
 ## Notes
 
 * [Compiling Preempt RT](compiling-preempt-rt)
+* [Ubuntu Base with QEMU](ubuntu-base-with-qemu)
 * [Kernel GPIO API (Working in Progress)](kernel-gpio-api)
-* [Ubuntu Base with QEMU(Working in Progress)](ubuntu-base-with-qemu)
 * [Preempt RT overview (Working in Progress)](preempt-rt-overview)
 * [Links](links)
 

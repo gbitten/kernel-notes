@@ -3,24 +3,22 @@ title: Ubuntu Base with QEMU
 comments: true
 ---
 
-<div class="alert">Warning! This is an working in progress article and its content may be incomplete and inconsistent.</div>
-
-This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubuntu Base<sup>[2]</sup>.  There is a great post about Ubuntu Base installation in Ask Ubuntu<sup>[3]</sup>. I am following the same path, but here I am installing on a QEMU virtual machine. It worth mentioning that this procedure will work only if the host and the virtual machine have the same architecture.
+This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubuntu Base<sup>[2]</sup> as its root filesystem.  There is a great post about Ubuntu Base installation in Ask Ubuntu<sup>[3]</sup>. I am following the same path, but here I am installing on a QEMU virtual machine. It worth mentioning that this procedure will work only if the host and the virtual machine have the same architecture.
 
 ## About Ubuntu Base
 
-**Ubuntu Base** is a minimal rootfs. Although It is highly stripped, but can install any package from Ubuntu repositories using the `apt-get` command. Because that, it is a useful tool to build custom systems. Ubuntu Base was previously known as Ubuntu Core, but Canonical renamed it and gave that name to other project. 
+**Ubuntu Base** is a highly stripped rootfs, which can install any package from Ubuntu repositories using the `apt-get` command. Because that, it is a useful tool to build custom systems. Ubuntu Base was previously known as Ubuntu Core, but Canonical renamed it and gave that name to other project. 
 
 ## About QEMU
 
-**QEMU** is an open source virtual machine monitor (VMM) or a hypervisor. It can virtualize hardwares from many architectures, including x86, SPARC, ARM, PowerPC, MIPs, Microblaze and others.
+**QEMU** is an open source virtual machine monitor (VMM) or hypervisor. It can virtualize hardwares from many architectures, including x86, SPARC, ARM, PowerPC, MIPs, Microblaze and others.
 
 ## Download Ubuntu Base
 
-Choose the version and download the Ubuntu Base [here](http://cdimage.ubuntu.com/ubuntu-basereleases/). This procedure will work only if the Ubuntu Base has the same architecture than the host machine. In my case, I downloaded the version 16.04 for i386. 
+Choose the version and download the Ubuntu Base [here](http://cdimage.ubuntu.com/ubuntu-base/releases/). This procedure will work only if the Ubuntu Base has the same architecture than the host machine. In my case, I downloaded the version 16.04 for x86 64Bits. 
 
 ```
-wget http://cdimage.ubuntu.com/ubuntu-basereleases/16.04/release/ubuntu-base-16.04-core-i386.tar.gz
+wget http://cdimage.ubuntu.com/ubuntu-base/releases/16.04/release/ubuntu-base-16.04-core-amd64.tar.gz
 ```
 
 ## Install QEMU
@@ -32,7 +30,7 @@ sudo apt-get install qemu
 ## Create QEMU image
 
 ```
-qemu-img create ubuntu-base.img 100M
+qemu-img create -f raw ubuntu-base.img 500M
 ```
 
 ## Log as root
@@ -49,16 +47,16 @@ QEMU can export a disk image as a Network Block Device (NBD). With that, the hos
 
 ```
 modprobe nbd max_part=16
-qemu-nbd -c /dev/nbd0 ubuntu-base.img
+qemu-nbd -f raw -c /dev/nbd0 ubuntu-base.img
 ```
 
-## Partionion the device
+## Partition the device
 
 ```
 fdisk /dev/nbd0
 ```
 
-Then press `n` `p` `1` `<Return>` `<Return>` `a` `1` `w`. This sequence creates a single partition on the image.
+Then press `n` `p` `1` `<Return>` `<Return>` `a` `1` `w`. This sequence creates a single bootable partition on the device.
 
 ## Format the partition
 
@@ -71,7 +69,7 @@ mkfs.ext4 /dev/nbd0p1
 ```
 mount /dev/nbd0p1 /mnt
 cd /mnt
-tar xvfz /path/to/where/you/put/ubuntu-base-16.04-core-i386.tar.gz
+tar xvfz /path/to/where/you/put/ubuntu-base-16.04-core-amd64.tar.gz
 ```
 
 ## Install bootloader
@@ -102,6 +100,8 @@ apt-get update
 apt-get install linux-image-4.4.0-75-generic
 ```
 
+**ATTENTION**: at the end of kernel installation, will be asked `GRUB install devices`. Choose the option related to nbd0p1 device. Any other option could damage the host bootloader. 
+
 ### Adjust grub configuration
 
 ```
@@ -128,7 +128,7 @@ exit
 ## Run the virtual machine
 
 ```
-qemu-system-i386 ubuntu-base.img
+qemu-system-x86_64 ubuntu-base.img
 ```
 
 ## References
