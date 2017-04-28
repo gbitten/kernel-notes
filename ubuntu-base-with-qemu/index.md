@@ -114,9 +114,7 @@ apt-get update
 apt-get install linux-image-4.4.0-75-generic
 ```
 
-**ATTENTION**: at the end of kernel installation, will be asked `GRUB install devices`. Choose the option related to nbd0p1 device. Any other option could damage the host bootloader. 
-
-
+**ATTENTION**: at the end of the kernel installation, will be asked: `GRUB install devices`. Choose the option related to nbd0p1 device. Any other option could damage the host bootloader. 
 
 ### Ajust grub configuration
 
