@@ -3,7 +3,7 @@ title: Ubuntu Base with QEMU
 comments: true
 ---
 
-This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubuntu Base<sup>[2]</sup> as its root filesystem.  There is a great post about Ubuntu Base installation in Ask Ubuntu<sup>[3]</sup>. I am following the same path, but here I am installing on a QEMU virtual machine. It worth mentioning that this procedure will work only if the host and the virtual machine have the same architecture. Besides that, the procedure was tested on x86. I don't know if it will work on other architectures. 
+This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubuntu Base<sup>[2]</sup> as the root filesystem.  There is a great post about Ubuntu Base installation in Ask Ubuntu<sup>[3]</sup>. I am following the same path, but here I am installing on a QEMU virtual machine. It worth mentioning that this procedure will work only if the host and the virtual machine have the same architecture. Besides that, the procedure was tested on x86. I don't know if it will work on other architectures. 
 
 ## About Ubuntu Base
 
