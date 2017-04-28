@@ -3,7 +3,7 @@ title: Ubuntu Base with QEMU
 comments: true
 ---
 
-This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubuntu Base<sup>[2]</sup> as its root filesystem.  There is a great post about Ubuntu Base installation in Ask Ubuntu<sup>[3]</sup>. I am following the same path, but here I am installing on a QEMU virtual machine. It worth mentioning that this procedure will work only if the host and the virtual machine have the same architecture.
+This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubuntu Base<sup>[2]</sup> as its root filesystem.  There is a great post about Ubuntu Base installation in Ask Ubuntu<sup>[3]</sup>. I am following the same path, but here I am installing on a QEMU virtual machine. It worth mentioning that this procedure will work only if the host and the virtual machine have the same architecture. Besides that, the procedure was tested on x86. I don't know if it will work on other architectures. 
 
 ## About Ubuntu Base
 
@@ -15,7 +15,15 @@ This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubu
 
 ## Download Ubuntu Base
 
-Choose the version and download the Ubuntu Base [here](http://cdimage.ubuntu.com/ubuntu-base/releases/). This procedure will work only if the Ubuntu Base has the same architecture than the host machine. In my case, I downloaded the version 16.04 for x86 64Bits. 
+Choose the Ubuntu Base version [here](http://cdimage.ubuntu.com/ubuntu-base/releases/) and download it. In my example I chose the version 16.04. If the Linux of the host is 32 bits then the virtual machine should be 32 bits also. 
+
+Download Ubuntu Base 32 bits:
+
+```
+wget http://cdimage.ubuntu.com/ubuntu-base/releases/16.04/release/ubuntu-base-16.04-core-i386.tar.gz
+```
+
+Download Ubuntu Base 64 bits:
 
 ```
 wget http://cdimage.ubuntu.com/ubuntu-base/releases/16.04/release/ubuntu-base-16.04-core-amd64.tar.gz
@@ -71,6 +79,14 @@ mount /dev/nbd0p1 /mnt
 ```
 
 ## Install Ubuntu Base
+
+If the host is 32 bits:
+
+```
+tar xvfz ubuntu-base-16.04-core-i386.tar.gz -C /mnt
+```
+
+If the host is 64 bits:
 
 ```
 tar xvfz ubuntu-base-16.04-core-amd64.tar.gz -C /mnt
@@ -134,6 +150,14 @@ reboot
 ```
 
 ## Run the virtual machine
+
+If the virtual machine is 32 bits:
+
+```
+qemu-system-i386 ubuntu-base.img
+```
+
+If the virtual machine is 64 bits:
 
 ```
 qemu-system-x86_64 ubuntu-base.img
