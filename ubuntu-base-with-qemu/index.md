@@ -17,13 +17,13 @@ This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubu
 
 Choose the Ubuntu Base version [here](http://cdimage.ubuntu.com/ubuntu-base/releases/) and download it. In my example I chose the version 16.04. If the Linux of the host is 32 bits then the virtual machine should be 32 bits also. 
 
-Download Ubuntu Base 32 bits:
+If the host is 32 bits then download Ubuntu Base 32 bits:
 
 ```
 wget http://cdimage.ubuntu.com/ubuntu-base/releases/16.04/release/ubuntu-base-16.04-core-i386.tar.gz
 ```
 
-Download Ubuntu Base 64 bits:
+If the host is 64 bits then download Ubuntu Base 64 bits:
 
 ```
 wget http://cdimage.ubuntu.com/ubuntu-base/releases/16.04/release/ubuntu-base-16.04-core-amd64.tar.gz
@@ -116,7 +116,7 @@ apt-get install linux-image-4.4.0-75-generic
 
 **ATTENTION**: at the end of the kernel installation, will be asked: `GRUB install devices`. Choose the option related to nbd0p1 device. Any other option could damage the host bootloader. 
 
-### Ajust grub configuration
+### Adjust grub configuration
 
 ```
 sed -i "s/quiet splash/rw text/g" /etc/default/grub
