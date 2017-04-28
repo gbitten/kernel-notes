@@ -73,14 +73,7 @@ mount /dev/nbd0p1 /mnt
 ## Install Ubuntu Base
 
 ```
-cd /mnt
-tar xvfz /path/to/where/you/put/ubuntu-base-16.04-core-amd64.tar.gz
-```
-
-## Install bootloader
-
-```
-grub-install --force --root-directory=/mnt /dev/nbd0
+tar xvfz ubuntu-base-16.04-core-amd64.tar.gz -C /mnt
 ```
 
 ## Copy DNS configuration
@@ -107,10 +100,14 @@ apt-get install linux-image-4.4.0-75-generic
 
 **ATTENTION**: at the end of kernel installation, will be asked `GRUB install devices`. Choose the option related to nbd0p1 device. Any other option could damage the host bootloader. 
 
-### Adjust grub configuration
+
+
+### Ajust grub configuration
 
 ```
-sed -i "s/nbd0p1 ro/sda1 rw/g" /boot/grub/grub.cfg
+sed -i "s/quiet splash/rw text/g" /etc/default/grub
+update-grub
+sed -i "s/nbd0p1 ro/sda1/g" /boot/grub/grub.cfg
 ```
 
 ###  Change the root password
@@ -119,16 +116,21 @@ sed -i "s/nbd0p1 ro/sda1 rw/g" /boot/grub/grub.cfg
 passwd root
 ```
 
-## Close procedure
-
-Exit from chroot, unmount filesystems, disconnect device and exit from root.
+### Exit ```chroot```
 
 ```
 exit
-cd /
-mount --make-rslave /mnt ; umount -R /mnt
-qemu-nbd -d /dev/nbd0
-exit
+```
+
+## Install grub
+```
+grub-install --root-directory=/mnt /dev/nbd0
+```
+
+## Reboot the host
+
+```
+reboot
 ```
 
 ## Run the virtual machine
