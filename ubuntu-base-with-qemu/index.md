@@ -7,7 +7,7 @@ This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubu
 
 ## About Ubuntu Base
 
-**Ubuntu Base** is a highly stripped rootfs, which can install any package from Ubuntu repositories using the `apt-get` command. Ubuntu Base was previously known as Ubuntu Core, but Canonical renamed it and gave that name to other project. 
+**Ubuntu Base** is a stripped rootfs, which can install any package from Ubuntu repositories using the `apt-get` command. Ubuntu Base was previously known as Ubuntu Core, but Canonical renamed it and gave that name to other project. 
 
 ## About QEMU
 
