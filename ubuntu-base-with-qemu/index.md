@@ -15,7 +15,7 @@ This procedure shows how to create a QEMU<sup>[1]</sup> virtual machine with Ubu
 
 ## Download Ubuntu Base
 
-Choose the Ubuntu Base version [here](http://cdimage.ubuntu.com/ubuntu-base/releases/) and download it. In my example, I chose the version 16.04. If the Linux of the host is 32 bits then the virtual machine should be also 32 bits. 
+Choose the Ubuntu Base version [here](http://cdimage.ubuntu.com/ubuntu-base/releases/) and download it. In my example, I chose the version 16.04. If the host is 32 bits then the virtual machine should be also 32 bits. 
 
 If the host is 32 bits then download Ubuntu Base 32 bits:
 
