@@ -7,6 +7,7 @@ comments: true
 
 * [musl libc](https://www.musl-libc.org/) - lightweight standard C library
 * [toy box](http://www.landley.net/toybox/) - lightweight root filesystem
+* [Aboriginal Linux](http://landley.net/aboriginal/) - shell script that builds the smallest/simplest linux system
 
 ## Interesting articles
 
