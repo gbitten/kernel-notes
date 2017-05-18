@@ -4,7 +4,7 @@
 
 * [Compiling Preempt RT](compiling-preempt-rt)
 * [Ubuntu Base with QEMU](ubuntu-base-with-qemu)
-* [Embedded from scratch (Working in Progress)](embedded-from-scratch-part-I)
+* [Embedded Linux From Scratch (Working in Progress)](ELFS-I)
 * [Kernel GPIO API (Working in Progress)](kernel-gpio-api)
 * [Preempt RT overview (Working in Progress)](preempt-rt-overview)
 * [Links](links)

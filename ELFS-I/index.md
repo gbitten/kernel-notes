@@ -1,11 +1,11 @@
 ---
-title: Embedded from scratch (part I)
+title: Embedded Linux From Scratch (part I)
 comments: true
 ---
 
 <div class="alert">Warning! This is an working in progress article and its content may be incomplete and inconsistent.</div>
 
-**Embedded from scratch** will be a series of 3 articles showing how to cross-build an embedded system. The host is a x86 machine and the target is an ARM machine.
+**Embedded Linux From Scratch** will be a series of 3 articles showing how to cross-build an embedded system. The host is a x86 machine and the target is an ARM machine.
 
 ## Build Toolchain
 
