@@ -62,13 +62,6 @@ cd ~/srcs
 git clone https://github.com/richfelker/musl-cross-make.git
 ```
 
-### Get config.sub
-
-```
-cd ~/srcs
-wget -O config.sub "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=3d5db9ebe860"
-```
-
 ### Get GCC
 
 Download and uncompress GCC:
@@ -86,12 +79,6 @@ cd ~/srcs/gcc-6.3.0
 cat ~/srcs/musl-cross-make/patches/gcc-6.3.0/* | patch -p1
 ```
 
-Copy config.sub:
-
-```
-cp -f ~/srcs/config.sub ~/srcs/gcc-6.3.0
-```
-
 ### Get binutils
 
 Download and uncompress binutils:
@@ -107,12 +94,6 @@ Apply patches:
 ```
 cd ~/srcs/binutils-2.27/
 cat ~/srcs/musl-cross-make/patches/binutils-2.27/* | patch -p1
-```
-
-Copy config.sub:
-
-```
-cp -f ~/srcs/config.sub ~/srcs/binutils-2.27
 ```
 
 ### Get musl
@@ -135,12 +116,6 @@ wget https://ftp.gnu.org/pub/gnu/gmp/gmp-6.1.1.tar.bz2
 tar jxvf gmp-6.1.1.tar.bz2
 ```
 
-Copy config.sub:
-
-```
-cp -f ~/srcs/config.sub ~/srcs/gmp-6.1.1
-```
-
 ### Get mpc
 
 Download and uncompress mpc
@@ -151,12 +126,6 @@ wget https://ftp.gnu.org/pub/gnu/mpc/mpc-1.0.3.tar.gz
 tar zxvf mpc-1.0.3.tar.gz
 ```
 
-Copy config.sub:
-
-```
-cp -f ~/srcs/config.sub ~/srcs/mpc-1.0.3
-```
-
 ### Get mpfr
 
 Download and uncompress mpfr
@@ -165,12 +134,6 @@ Download and uncompress mpfr
 cd ~/srcs
 wget https://ftp.gnu.org/pub/gnu/mpfr/mpfr-3.1.4.tar.bz2
 tar jxvf mpfr-3.1.4.tar.bz2
-```
-
-Copy config.sub:
-
-```
-cp -f ~/srcs/config.sub ~/srcs/mpfr-3.1.4
 ```
 
 ### Get Linux
@@ -197,10 +160,12 @@ cat ~/srcs/musl-cross-make/patches/linux-4.4.10/* | patch -p1
 Create links for gmp mpc and mpfr sources
 
 ```
-cd ~/srcs/gcc-6.3
-ln -sf ../gmp-6.1.1 gmp
-ln -sf ../mpc-1.0.3 mpc
-ln -sf ../mpfr-3.1.4 mpfr
+mkdir -p ~/srcs/toolchain
+ln -sf ~/srcs/binutils-2.27/* ~/srcs/toolchain/
+ln -sf ~/srcs/gcc-6.3.0/* ~/srcs/toolchain/
+ln -sf ~/srcs/gmp-6.1.1 ~/srcs/toolchain/gmp
+ln -sf ~/srcs/mpc-1.0.3 ~/srcs/toolchain/mpc
+ln -sf ~/srcs/mpfr-3.1.4 ~/srcs/toolchain/mpfr
 ```
 
 Configure Makefile with the following options<sup>[4]</sup>:
@@ -211,9 +176,9 @@ Configure Makefile with the following options<sup>[4]</sup>:
 
 ```
 cd ~/toolchain/objs
-../srcs/gcc-6.3.0/configure --enable-languages=c,c++  --with-float=hard \
+~/srcs/toolchain/configure --enable-languages=c,c++  --with-float=hard \
   --disable-werror --target=arm-linux-musleabihf --prefix= --libdir=/lib \
-  --disable-multilib --with-sysroot=/arm-linux-musleabihf --enable-tls \
+  --disable-multilib --with-sysroot --enable-tls \
   --disable-libmudflap --disable-libsanitizer --disable-gnu-indirect-function \
   --disable-libmpx --enable-libstdcxx-time \
   --with-build-sysroot=~/toolchain/sysroot
@@ -223,13 +188,14 @@ Build GCC:
 
 ```
 cd ~/toolchain/objs
-ln -sf . ../sysroot/usr
-ln -sf lib ../sysroot/lib64
+ln -s ~/toolchain/objs ~/toolchain/sysroot/usr
+ln -s ~/toolchain/objs/lib ~/toolchain/sysroot/lib64
 mkdir -p ~/toolchain/ssysroot/include
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
   ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" all-gcc
 ```
+
 ## References
 
 * [1] [Cross-Compiled Linux From Scratch - Embedded](http://clfs.org/view/clfs-embedded/arm/index.html)
