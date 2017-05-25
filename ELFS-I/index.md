@@ -178,7 +178,7 @@ Configure Makefile with the following options<sup>[5]</sup>:
 cd ~/toolchain/build/obj_toolchain
 ~/srcs/combined/configure --enable-languages=c,c++  --with-float=hard \
   --disable-werror --target=arm-linux-musleabihf --prefix= --libdir=/lib \
-  --disable-multilib --with-sysroot --enable-tls \
+  --disable-multilib --with-sysroot=/arm-linux-musleabihf --enable-tls \
   --disable-libmudflap --disable-libsanitizer --disable-gnu-indirect-function \
   --disable-libmpx --enable-deterministic-archives --enable-libstdcxx-time \
   --with-build-sysroot=~/toolchain/build/obj_sysroot
@@ -196,6 +196,28 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
   ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" all-gcc
 ```
+
+### Build musl
+
+Configure Makefile:
+
+```
+cd ~/toolchain/build/obj_musl
+~/srcs/musl-1.1.16/configure --prefix= --host=arm-linux-musleabihf \
+  CC="../obj_toolchain/gcc/xgcc -B ../obj_toolchain/gcc" \
+  LIBCC="../obj_toolchain/arm-linux-musleabihf/libgcc/libgcc.a" 
+```
+
+Build musl:
+
+```
+cd ~/toolchain/build/obj_musl
+make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
+  MAKEINFO=false \
+  DESTDIR=~/toolchain/build/obj_sysroot/usr \
+  install-headers
+```
+
 
 ## References
 
