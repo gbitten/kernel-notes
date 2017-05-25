@@ -208,7 +208,7 @@ cd ~/toolchain/build/obj_musl
   LIBCC="../obj_toolchain/arm-linux-musleabihf/libgcc/libgcc.a" 
 ```
 
-Build musl:
+Install headers:
 
 ```
 cd ~/toolchain/build/obj_musl
@@ -216,6 +216,16 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false \
   DESTDIR=~/toolchain/build/obj_sysroot/usr \
   install-headers
+```
+
+Make target glib:
+
+```
+cd ~/toolchain/build/obj_toolchain
+make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
+  MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= \
+  infodir= ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false enable_shared=no" \
+  all-target-libgcc
 ```
 
 
