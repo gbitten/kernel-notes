@@ -50,9 +50,10 @@ source ~/.bash_profile
 ### Create directory structure
 
 ```
-mkdir -p ~/srcs
-mkdir -p ~/toolchain/objs
-mkdir -p ~/toolchain/sysroot
+mkdir -p ~/srcs/combined
+mkdir -p ~/toolchain/build/obj_toolchain
+mkdir -p ~/toolchain/build/obj_musl
+mkdir -p ~/toolchain/build/sysroot
 ```
 
 ### Get musl-cross-make
@@ -157,40 +158,41 @@ cat ~/srcs/musl-cross-make/patches/linux-4.4.10/* | patch -p1
 
 ### Build GCC
 
-Create links for gmp mpc and mpfr sources
+Create a combined tree<sup>[4]</sup>
 
 ```
-mkdir -p ~/srcs/toolchain
-ln -sf ~/srcs/binutils-2.27/* ~/srcs/toolchain/
-ln -sf ~/srcs/gcc-6.3.0/* ~/srcs/toolchain/
-ln -sf ~/srcs/gmp-6.1.1 ~/srcs/toolchain/gmp
-ln -sf ~/srcs/mpc-1.0.3 ~/srcs/toolchain/mpc
-ln -sf ~/srcs/mpfr-3.1.4 ~/srcs/toolchain/mpfr
+ln -sf ~/srcs/binutils-2.27/* ~/srcs/combined/
+ln -sf ~/srcs/gcc-6.3.0/* ~/srcs/combined/
+ln -sf ~/srcs/gmp-6.1.1 ~/srcs/combined/gmp
+ln -sf ~/srcs/mpc-1.0.3 ~/srcs/combined/mpc
+ln -sf ~/srcs/mpfr-3.1.4 ~/srcs/combined/mpfr
 ```
 
-Configure Makefile with the following options<sup>[4]</sup>:
+Configure Makefile with the following options<sup>[5]</sup>:
 
 * `--enable-languages`: Specify that only a particular subset of compilers and their runtime libraries should be built.
 * `--with-float`: Set the compiler option `-mhard-float` as default. The `-mhard-float` flag sets the GCC compiler to generates the output containing floating point instructions.
 
 
 ```
-cd ~/toolchain/objs
-~/srcs/toolchain/configure --enable-languages=c,c++  --with-float=hard \
+cd ~/toolchain/build/obj_toolchain
+~/srcs/combined/configure --enable-languages=c,c++  --with-float=hard \
   --disable-werror --target=arm-linux-musleabihf --prefix= --libdir=/lib \
   --disable-multilib --with-sysroot --enable-tls \
   --disable-libmudflap --disable-libsanitizer --disable-gnu-indirect-function \
-  --disable-libmpx --enable-libstdcxx-time \
-  --with-build-sysroot=~/toolchain/sysroot
+  --disable-libmpx --enable-deterministic-archives --enable-libstdcxx-time \
+  --with-build-sysroot=~/toolchain/build/obj_sysroot
 ```
 
 Build GCC:
 
 ```
-cd ~/toolchain/objs
-ln -s ~/toolchain/objs ~/toolchain/sysroot/usr
-ln -s ~/toolchain/objs/lib ~/toolchain/sysroot/lib64
-mkdir -p ~/toolchain/ssysroot/include
+cd ~/toolchain/build/
+ln -sf ~/toolchain/build ~/toolchain/build/obj_sysroot/usr
+ln -sf ~/toolchain/build/lib ~/toolchain/build/obj_sysroot/lib64
+mkdir -p ~/toolchain/build/obj_sysroot/include
+cd ~/toolchain/build/obj_toolchain
+
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
   ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" all-gcc
@@ -201,4 +203,5 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
 * [1] [Cross-Compiled Linux From Scratch - Embedded](http://clfs.org/view/clfs-embedded/arm/index.html)
 * [2] [musl-cross-make](https://github.com/richfelker/musl-cross-make)
 * [3] [mkroot](https://github.com/landley/mkroot)
-* [4] [Installing GCC](https://gcc.gnu.org/install/configure.html)
+* [4] [How to test GCC on a simulator](https://gcc.gnu.org/wiki/Building_Cross_Toolchains_with_gcc)
+* [5] [Installing GCC](https://gcc.gnu.org/install/configure.html)
