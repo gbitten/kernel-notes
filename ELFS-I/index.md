@@ -53,7 +53,7 @@ source ~/.bash_profile
 mkdir -p ~/srcs/combined
 mkdir -p ~/toolchain/build/obj_toolchain
 mkdir -p ~/toolchain/build/obj_musl
-mkdir -p ~/toolchain/build/sysroot
+mkdir -p ~/toolchain/build/obj_sysroot
 ```
 
 ### Get musl-cross-make
@@ -188,11 +188,10 @@ Build GCC:
 
 ```
 cd ~/toolchain/build/
-ln -sf ~/toolchain/build ~/toolchain/build/obj_sysroot/usr
+ln -sf . ~/toolchain/build/obj_sysroot/usr
 ln -sf ~/toolchain/build/lib ~/toolchain/build/obj_sysroot/lib64
 mkdir -p ~/toolchain/build/obj_sysroot/include
 cd ~/toolchain/build/obj_toolchain
-
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
   ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" all-gcc
