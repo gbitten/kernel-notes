@@ -154,11 +154,7 @@ cd ~/srcs/linux-4.4.10/
 cat ~/srcs/musl-cross-make/patches/linux-4.4.10/* | patch -p1
 ```
 
-## Build toolchain
-
-### Build GCC
-
-Create a combined tree<sup>[4]</sup>
+### Create a combined tree<sup>[4]</sup>
 
 ```
 ln -sf ~/srcs/binutils-2.27/* ~/srcs/combined/
@@ -167,6 +163,10 @@ ln -sf ~/srcs/gmp-6.1.1 ~/srcs/combined/gmp
 ln -sf ~/srcs/mpc-1.0.3 ~/srcs/combined/mpc
 ln -sf ~/srcs/mpfr-3.1.4 ~/srcs/combined/mpfr
 ```
+
+## Build toolchain
+
+### Build GCC
 
 Configure Makefile with the following options<sup>[5]</sup>:
 
