@@ -47,13 +47,10 @@ source ~/.bash_profile
 
 ## Get toolchain
 
-### Create directory structure
+### Create source directory
 
 ```
-mkdir -p ~/srcs/combined
-mkdir -p ~/toolchain/build/obj_toolchain
-mkdir -p ~/toolchain/build/obj_musl
-mkdir -p ~/toolchain/build/obj_sysroot
+mkdir -p ~/srcs
 ```
 
 ### Get musl-cross-make
@@ -157,6 +154,7 @@ cat ~/srcs/musl-cross-make/patches/linux-4.4.10/* | patch -p1
 ### Create a combined tree<sup>[4]</sup>
 
 ```
+mkdir -p ~/srcs/combined
 ln -sf ~/srcs/binutils-2.27/* ~/srcs/combined/
 ln -sf ~/srcs/gcc-6.3.0/* ~/srcs/combined/
 ln -sf ~/srcs/gmp-6.1.1 ~/srcs/combined/gmp
@@ -166,68 +164,114 @@ ln -sf ~/srcs/mpfr-3.1.4 ~/srcs/combined/mpfr
 
 ## Build toolchain
 
-### Build GCC
+### Create toolchain directory
 
-Configure Makefile with the following options<sup>[5]</sup>:
+```
+mkdir -p ~/toolchain
+```
+
+### Configure GCC's Makefile 
+
+Configure options<sup>[5]</sup>:
 
 * `--enable-languages`: Specify that only a particular subset of compilers and their runtime libraries should be built.
 * `--with-float`: Set the compiler option `-mhard-float` as default. The `-mhard-float` flag sets the GCC compiler to generates the output containing floating point instructions.
-
+* `--with-build-sysroot`: Set a directory to be consider as the system root while building target libraries, instead of the directory specified with `--with-sysroot`. The `readlink` command is used to convert the directory to a full path.
 
 ```
-cd ~/toolchain/build/obj_toolchain
+mkdir -p ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
+cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
 ~/srcs/combined/configure --enable-languages=c,c++  --with-float=hard \
   --disable-werror --target=arm-linux-musleabihf --prefix= --libdir=/lib \
   --disable-multilib --with-sysroot=/arm-linux-musleabihf --enable-tls \
   --disable-libmudflap --disable-libsanitizer --disable-gnu-indirect-function \
   --disable-libmpx --enable-deterministic-archives --enable-libstdcxx-time \
-  --with-build-sysroot=~/toolchain/build/obj_sysroot
+  --with-build-sysroot=$(readlink -f ~/toolchain/build-arm-linux-musleabihf/obj_sysroot)
 ```
 
-Build GCC:
+### Build GCC's cross-compilers only
 
 ```
-cd ~/toolchain/build/
-ln -sf . ~/toolchain/build/obj_sysroot/usr
-ln -sf ~/toolchain/build/lib ~/toolchain/build/obj_sysroot/lib64
-mkdir -p ~/toolchain/build/obj_sysroot/include
-cd ~/toolchain/build/obj_toolchain
+cd ~/toolchain/build-arm-linux-musleabihf/
+mkdir -p obj_sysroot
+ln -sf . obj_sysroot/usr
+ln -sf lib obj_sysroot/lib64
+mkdir -p obj_sysroot/include
+cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
-  MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
-  ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" all-gcc
+  MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" \
+  all-gcc
 ```
 
-### Build musl
-
-Configure Makefile:
+### Configure musl's Makefile
 
 ```
-cd ~/toolchain/build/obj_musl
+mkdir -p ~/toolchain/build-arm-linux-musleabihf/obj_musl
+cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
 ~/srcs/musl-1.1.16/configure --prefix= --host=arm-linux-musleabihf \
   CC="../obj_toolchain/gcc/xgcc -B ../obj_toolchain/gcc" \
   LIBCC="../obj_toolchain/arm-linux-musleabihf/libgcc/libgcc.a" 
 ```
 
-Install headers:
+### Install musl's headers
 
 ```
-cd ~/toolchain/build/obj_musl
+cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false \
-  DESTDIR=~/toolchain/build/obj_sysroot/usr \
+  DESTDIR=~/toolchain/build-arm-linux-musleabihf/obj_sysroot/usr \
   install-headers
 ```
 
-Make target glib:
+### Build target libgcc
 
 ```
-cd ~/toolchain/build/obj_toolchain
+cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
-  MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= \
-  infodir= ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false enable_shared=no" \
+  MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false enable_shared=no" \
   all-target-libgcc
 ```
 
+### Build musl
+
+```
+cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
+make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
+  MAKEINFO=false AR=../obj_toolchain/binutils/ar \
+  RANLIB=../obj_toolchain/binutils/ranlib
+```
+
+### Install musl
+
+```
+cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
+make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
+  MAKEINFO=false AR=../obj_toolchain/binutils/ar \
+  RANLIB=../obj_toolchain/binutils/ranlib \
+  DESTDIR=~/toolchain/build-arm-linux-musleabihf/obj_sysroot \
+  install
+```
+
+### Build GCC
+
+```
+cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
+make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
+  MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
+  ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false"
+```
+
+### Install kernel headers
+
+```
+mkdir -p ~/toolchain/build-arm-linux-musleabihf/obj_kernel_headers/staged
+cd ~/srcs/linux-4.4.10/
+make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
+  MAKEINFO=false ARCH=arm \
+  O=~/toolchain/build-arm-linux-musleabihf/obj_kernel_headers \
+  INSTALL_HDR_PATH=~/toolchain/build-arm-linux-musleabihf/obj_kernel_headers/staged \
+  headers_install
+```
 
 ## References
 
