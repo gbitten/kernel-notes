@@ -36,7 +36,7 @@ cat > ~/.bashrc << "EOF"
 set +h
 umask 022
 LC_ALL=POSIX
-PATH=~/toolchain/sysroot/bin:/bin:/usr/bin
+PATH=/bin:/usr/bin
 export LC_ALL PATH
 EOF
 ```
@@ -179,25 +179,25 @@ Configure options<sup>[5]</sup>:
 * `--with-build-sysroot`: Set a directory to be consider as the system root while building target libraries, instead of the directory specified with `--with-sysroot`. The `readlink` command is used to convert the directory to a full path.
 
 ```
-mkdir -p ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
-cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
+mkdir -p ~/toolchain/build/obj_toolchain
+cd ~/toolchain/build/obj_toolchain
 ~/srcs/combined/configure --enable-languages=c,c++  --with-float=hard \
   --disable-werror --target=arm-linux-musleabihf --prefix= --libdir=/lib \
   --disable-multilib --with-sysroot=/arm-linux-musleabihf --enable-tls \
   --disable-libmudflap --disable-libsanitizer --disable-gnu-indirect-function \
   --disable-libmpx --enable-deterministic-archives --enable-libstdcxx-time \
-  --with-build-sysroot=$(readlink -f ~/toolchain/build-arm-linux-musleabihf/obj_sysroot)
+  --with-build-sysroot=$(readlink -f ~/toolchain/build/obj_sysroot)
 ```
 
 ### Build GCC's cross-compilers only
 
 ```
-cd ~/toolchain/build-arm-linux-musleabihf/
+cd ~/toolchain/build/
 mkdir -p obj_sysroot
 ln -sf . obj_sysroot/usr
 ln -sf lib obj_sysroot/lib64
 mkdir -p obj_sysroot/include
-cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
+cd ~/toolchain/build/obj_toolchain
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false" \
   all-gcc
@@ -206,8 +206,8 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
 ### Configure musl's Makefile
 
 ```
-mkdir -p ~/toolchain/build-arm-linux-musleabihf/obj_musl
-cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
+mkdir -p ~/toolchain/build/obj_musl
+cd ~/toolchain/build/obj_musl
 ~/srcs/musl-1.1.16/configure --prefix= --host=arm-linux-musleabihf \
   CC="../obj_toolchain/gcc/xgcc -B ../obj_toolchain/gcc" \
   LIBCC="../obj_toolchain/arm-linux-musleabihf/libgcc/libgcc.a" 
@@ -216,17 +216,17 @@ cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
 ### Install musl's headers
 
 ```
-cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
+cd ~/toolchain/build/obj_musl
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false \
-  DESTDIR=~/toolchain/build-arm-linux-musleabihf/obj_sysroot/usr \
+  DESTDIR=~/toolchain/build/obj_sysroot/usr \
   install-headers
 ```
 
 ### Build target libgcc
 
 ```
-cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
+cd ~/toolchain/build/obj_toolchain
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false enable_shared=no" \
   all-target-libgcc
@@ -235,7 +235,7 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
 ### Build musl
 
 ```
-cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
+cd ~/toolchain/build/obj_musl
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false AR=../obj_toolchain/binutils/ar \
   RANLIB=../obj_toolchain/binutils/ranlib
@@ -244,18 +244,18 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
 ### Install musl
 
 ```
-cd ~/toolchain/build-arm-linux-musleabihf/obj_musl
+cd ~/toolchain/build/obj_musl
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false AR=../obj_toolchain/binutils/ar \
   RANLIB=../obj_toolchain/binutils/ranlib \
-  DESTDIR=~/toolchain/build-arm-linux-musleabihf/obj_sysroot \
+  DESTDIR=~/toolchain/build/obj_sysroot \
   install
 ```
 
 ### Build GCC
 
 ```
-cd ~/toolchain/build-arm-linux-musleabihf/obj_toolchain
+cd ~/toolchain/build/obj_toolchain
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false MAKE="make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= \
   ac_cv_prog_lex_root=lex.yy.c MAKEINFO=false"
@@ -264,12 +264,12 @@ make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
 ### Install kernel headers
 
 ```
-mkdir -p ~/toolchain/build-arm-linux-musleabihf/obj_kernel_headers/staged
+mkdir -p ~/toolchain/build/obj_kernel_headers/staged
 cd ~/srcs/linux-4.4.10/
 make MULTILIB_OSDIRNAMES= INFO_DEPS= infodir= ac_cv_prog_lex_root=lex.yy.c \
   MAKEINFO=false ARCH=arm \
-  O=~/toolchain/build-arm-linux-musleabihf/obj_kernel_headers \
-  INSTALL_HDR_PATH=~/toolchain/build-arm-linux-musleabihf/obj_kernel_headers/staged \
+  O=~/toolchain/build/obj_kernel_headers \
+  INSTALL_HDR_PATH=~/toolchain/build/obj_kernel_headers/staged \
   headers_install
 ```
 
